@@ -1,0 +1,134 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Styled Time Zone Clock</title>
+    <style>
+        /* Basic styling */
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            margin: 10px 0;
+        }
+
+        /* Dropdown styling */
+        .dropdown-container {
+            position: relative;
+            width: 300px;
+            margin: 20px 0;
+        }
+
+        .dropdown {
+            width: 100%;
+            padding: 12px 20px;
+            font-size: 16px;
+            color: #333;
+            background-color: #fff;
+            border: 2px solid #009688;
+            border-radius: 8px;
+            appearance: none;
+            cursor: pointer;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        /* Add arrow icon */
+        .dropdown-container::after {
+            content: '▼';
+            font-size: 14px;
+            color: #009688;
+            position: absolute;
+            right: 20px;
+            top: 16px;
+            pointer-events: none;
+        }
+
+        .dropdown:hover {
+            background-color: #f0f8f7;
+            border-color: #007d70;
+        }
+
+        /* Clock styling */
+        .clock-display {
+            background-color: #009688;
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            width: 250px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 20px;
+            transition: transform 0.3s ease; /* Smooth scaling effect */
+        }
+
+        /* Hover effect on clock display */
+        .clock-display:hover {
+            transform: scale(1.05); /* Slightly enlarges the display on hover */
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Select a Time Zone</h1>
+
+    <!-- Styled dropdown container -->
+    <div class="dropdown-container">
+        <select id="timezoneDropdown" class="dropdown" onchange="updateClock()">
+            <option value="America/New_York">New York (EST)</option>
+            <option value="Europe/London">London (GMT)</option>
+            <option value="Asia/Tokyo">Tokyo (JST)</option>
+            <option value="Australia/Sydney">Sydney (AEST)</option>
+            <option value="America/Los_Angeles">Los Angeles (PST)</option>
+            <option value="America/Chicago">Chicago (CST)</option>
+            <option value="Europe/Paris">Paris (CET)</option>
+            <option value="Asia/Hong_Kong">Hong Kong (HKT)</option>
+            <option value="Asia/Singapore">Singapore (SGT)</option>
+            <option value="Asia/Dubai">Dubai (GST)</option>
+            <option value="Asia/Seoul">Seoul (KST)</option>
+            <option value="Africa/Johannesburg">Johannesburg (SAST)</option>
+            <option value="America/Sao_Paulo">São Paulo (BRT)</option>
+            <option value="America/Mexico_City">Mexico City (CST)</option>
+            <option value="Asia/Kolkata">Mumbai (IST)</option>
+        </select>
+    </div>
+
+    <!-- Display for the selected time zone clock -->
+    <div class="clock-display">
+        <h2 id="timezoneLabel">New York (EST)</h2>
+        <p id="timeDisplay"></p>
+    </div>
+
+    <script>
+        // Function to update the clock display based on selected time zone
+        function updateClock() {
+            const selectedTimeZone = document.getElementById("timezoneDropdown").value;
+            const timezoneLabel = document.getElementById("timezoneDropdown").selectedOptions[0].text;
+            document.getElementById("timezoneLabel").textContent = timezoneLabel;
+
+            function displayTime() {
+                const options = { hour: '2-digit', minute: '2-digit', second: '2-digit' };
+                document.getElementById("timeDisplay").textContent = new Date().toLocaleTimeString("en-US", { ...options, timeZone: selectedTimeZone });
+            }
+
+            // Update clock every second
+            clearInterval(window.clockInterval);
+            window.clockInterval = setInterval(displayTime, 1000);
+
+            // Initial display of time
+            displayTime();
+        }
+
+        // Initial clock display when page loads
+        window.onload = updateClock;
+    </script>
+
+</body>
+</html>
